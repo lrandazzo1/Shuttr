@@ -31,9 +31,9 @@ build, no framework preset. Deployed to Vercel (team `jamoke`, project
 in-page links are written with the `.html` suffix so the files also work opened
 straight from disk; Vercel 308-redirects them to the clean path.
 
-To deploy: drag the `site/` folder onto vercel.com/new, or connect this repo to
-the existing project (Settings → Git, Framework Preset **Other**, build command
-and output directory empty).
+Deploys come from this repo: the Vercel project builds `main` with the root
+directory set to `site/`, framework preset **Other**, build command and output
+directory empty. Pushing to `main` ships the site.
 
 ## components/ — the quiz
 
@@ -43,10 +43,9 @@ expands the result in place when the email is submitted. See
 `components/README.md` for props, the payload shape, and the affiliate and
 consent notes.
 
-**Known divergence:** `site/quiz.js` is a vanilla port of the same quiz, and it
-is still on the **dark** palette and single-select. It was built before the
-light-theme iteration. Bringing it in line is a straight port — ask and it gets
-done.
+`site/quiz.js` is a vanilla port of the same quiz for the static site — same
+questions, math, archetypes, copy and behaviour, no React. The two are kept in
+step by hand, so a change to one needs the same change to the other.
 
 ## Before launch
 
