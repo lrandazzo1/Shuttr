@@ -6,8 +6,6 @@ Static site. No build step, no dependencies to install.
 index.html       The landing page: signup, the "your year in dots" tool, article links
 edition-01.html  Edition No. 01 — intro, gated "Four inventions" section, sign-up card
 story.html       Our Story — 186 pickups, whack-a-mole, the Shuttr pivot, the mission
-api/subscribe.js Vercel function: forwards a signup to Mailcheap (needs 3 env vars)
-vercel.json      cleanUrls routing + security headers
 ```
 
 ## Live
@@ -16,6 +14,9 @@ Deployed to Vercel (team `jamoke`, project `unscroll-site`):
 
 - https://unscroll-site-wheat.vercel.app
 - https://unscroll-site-jamoke.vercel.app
+
+`vercel.json` and `api/subscribe.js` live at the repo root, one level up: Vercel
+builds from there and `vercel.json` points it at this folder.
 
 `cleanUrls: true` means `/story.html` serves at `/story`; the in-page links are
 written as `story.html` / `index.html` so they also work opened from disk, and

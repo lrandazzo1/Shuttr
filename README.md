@@ -5,6 +5,7 @@ React quiz component, and the earlier builds kept for reference.
 
 ```
 site/          the deployed site — static HTML, no build step
+api/           the signup function (runs on Vercel)
 components/    FocusStackDiagnostic.jsx, the React/Next.js quiz
 examples/      a worked Next.js route handler the quiz can post to
 docs/          how the Shuttr product photography was pulled from Shopify
@@ -26,16 +27,20 @@ build, no framework preset. Deployed to Vercel (team `jamoke`, project
 | `edition-01.html` | Edition No. 01 — the article, the blur gate from Section II, the sign-up card |
 | `story.html` | Our Story — the reflex, the 186/6/43 math, whack-a-mole, the Shuttr pivot |
 | `quiz.html` + `quiz.js` | The Focus Stack Diagnostic, as a standalone page |
-| `api/subscribe.js` | Vercel function the landing forms post to; forwards the email to Mailcheap |
-| `vercel.json` | `cleanUrls` routing and security headers |
 
-`vercel.json` sets `cleanUrls: true`, so `/story.html` serves at `/story`. The
+The root `vercel.json` sets `cleanUrls: true`, so `/story.html` serves at `/story`. The
 in-page links are written with the `.html` suffix so the files also work opened
 straight from disk; Vercel 308-redirects them to the clean path.
 
-Deploys come from this repo: the Vercel project builds `main` with the root
-directory set to `site/`, framework preset **Other**, build command and output
-directory empty. Pushing to `main` ships the site.
+Deploys come from this repo: the Vercel project builds `main` from the repo
+root, framework preset **Other**, no build command. Pushing to `main` ships the
+site. Two things at the repo root make that work, so leave the project's Root
+Directory setting empty:
+
+| File | What it is |
+|---|---|
+| `vercel.json` | `outputDirectory: "site"` (serve `site/` at `/`), `cleanUrls` routing, security headers |
+| `api/subscribe.js` | Vercel function the landing forms post to; forwards the email to Mailcheap |
 
 ## components/ — the quiz
 
