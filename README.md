@@ -22,7 +22,8 @@ build, no framework preset. Deployed to Vercel (team `jamoke`, project
 
 | File | What it is |
 |---|---|
-| `index.html` | Edition No. 01 — the article, the blur gate from Section II, the sign-up card |
+| `index.html` | The landing page: signup, the "your year in dots" tool, links to the articles |
+| `edition-01.html` | Edition No. 01 — the article, the blur gate from Section II, the sign-up card |
 | `story.html` | Our Story — the reflex, the 186/6/43 math, whack-a-mole, the Shuttr pivot |
 | `quiz.html` + `quiz.js` | The Focus Stack Diagnostic, as a standalone page |
 | `vercel.json` | `cleanUrls` routing and security headers |
@@ -55,6 +56,8 @@ Search for `PLACEHOLDER` across the repo. The short list:
 - **Form actions** — every form is a stub that fakes success. Point them at your
   list provider; `examples/app/api/subscribe/route.js` shows the payload shape.
   In `site/quiz.js`, set `ENDPOINT`.
+  In `site/index.html`, set `SIGNUP_ENDPOINT`; until it is set the landing forms
+  say they are not connected and do not fake success.
 - **Affiliate links** — `DEFAULT_TOOLS` in the component. All `#` today.
 - **Social proof** — the 12,400 readers figure is a placeholder, as are the
   140 testers and the beta-tester quote.

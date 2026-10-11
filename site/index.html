@@ -5,9 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <!-- ─── [PLACEHOLDER: META] ─────────────────────────────────────────────── -->
-<title>How the Slot Machine Got Into Your Pocket — Unscroll No. 01</title>
-<meta name="description" content="Edition No. 01: a short history of how your attention became the product — and what it costs to buy it back." />
+<title>Unscroll: less phone, more life</title>
+<meta name="description" content="Free tips and tools to help you spend less time on your phone. One easy email a week." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Unscroll: less phone, more life" />
+<meta property="og:description" content="Free tips and tools to help you spend less time on your phone. One easy email a week." />
 <!-- ─────────────────────────────────────────────────────────────────────── -->
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23FBFAF8'/%3E%3Ccircle cx='16' cy='16' r='8' fill='%23B4411F'/%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,7 +32,7 @@
           ink:    '#15140F',   // primary text
           muted:  '#6B6A62',   // secondary text
           rule:   '#E4E1D9',   // hairlines
-          accent: '#B4411F',   // single accent — marks, links, CTA hover
+          accent: '#B4411F',   // single accent: marks, links, CTA hover
         },
         maxWidth: { reading: '38rem' },
       },
@@ -41,60 +46,48 @@
   body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   ::selection { background: #B4411F; color: #FBFAF8; }
 
-  .prose-editorial p { margin-bottom: 1.6em; }
-  .prose-editorial p:last-child { margin-bottom: 0; }
-
-  .dropcap::first-letter {
-    float: left; font-family: Newsreader, Georgia, serif; font-weight: 500;
-    font-size: 4.1rem; line-height: .82; padding: .06em .09em 0 0; color: #15140F;
+  /* Your year: 365 dots, one per day. */
+  #year {
+    display: grid; gap: var(--gap, 4px);
+    grid-template-columns: repeat(var(--cols, 20), minmax(0, 1fr));
   }
-
-  /* Numbered section rule. */
-  .sectionmark::before {
-    content: ''; display: block; width: 2.25rem; height: 1px;
-    background: #B4411F; margin-bottom: 1.25rem;
+  #year i {
+    aspect-ratio: 1; border-radius: 50%;
+    background: rgba(21, 20, 15, .1); transition: background-color .3s ease;
   }
+  #year i.on { background: #B4411F; }
+  @media (min-width: 640px)  { #year { --cols: 36; --gap: 6px; } }
+  @media (min-width: 1024px) { #year { --cols: 30; --gap: 7px; } }
 
-  /* ── The gate: progressive blur + gradient fade ──────────────────────── */
-  #gated {
-    position: relative;
-    max-height: 46vh;
-    overflow: hidden;
-    pointer-events: none;
-    user-select: none;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 18%, rgba(0,0,0,.35) 62%, transparent 100%);
-            mask-image: linear-gradient(to bottom, #000 0%, #000 18%, rgba(0,0,0,.35) 62%, transparent 100%);
+  /* The hours slider. */
+  .range { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 32px; background: transparent; cursor: pointer; }
+  .range:focus { outline: none; }
+  .range::-webkit-slider-runnable-track {
+    height: 4px; border-radius: 999px;
+    background: linear-gradient(to right, #B4411F var(--fill, 27%), #E4E1D9 var(--fill, 27%));
   }
-  /* Three stacked layers of increasing blur — cheaper + smoother than one filter. */
-  #gated .veil { position: absolute; inset: 0; pointer-events: none; }
-  #gated .veil-1 { backdrop-filter: blur(1px);  -webkit-backdrop-filter: blur(1px);  top: 12%; }
-  #gated .veil-2 { backdrop-filter: blur(3px);  -webkit-backdrop-filter: blur(3px);  top: 34%; }
-  #gated .veil-3 { backdrop-filter: blur(7px);  -webkit-backdrop-filter: blur(7px);  top: 58%; }
-  #gated .wash   { position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(251,250,248,0) 0%, rgba(251,250,248,.55) 55%, #FBFAF8 100%); }
-
-  /* ── Unlocking ─────────────────────────────────────────────────────────
-     A successful subscribe drops the mask and grows #gated from its clipped
-     height to its own. max-height is set to the measured value first so the
-     growth animates, then released to none so later reflows are never clipped. */
-  #gated { transition: max-height .8s cubic-bezier(.2,.7,.2,1); }
-  #gated.is-unlocked {
-    -webkit-mask-image: none;
-            mask-image: none;
-    pointer-events: auto;
-    user-select: auto;
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 30px; height: 30px; margin-top: -13px; border-radius: 50%;
+    background: #fff; border: 1.5px solid #15140F; box-shadow: 0 2px 8px rgba(21, 20, 15, .16);
   }
-  #gate { transition: opacity .35s ease, transform .35s ease; }
-  #gate.is-dismissed { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+  .range::-moz-range-track { height: 4px; border-radius: 999px; background: #E4E1D9; }
+  .range::-moz-range-progress { height: 4px; border-radius: 999px; background: #B4411F; }
+  .range::-moz-range-thumb {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #fff; border: 1.5px solid #15140F; box-shadow: 0 2px 8px rgba(21, 20, 15, .16);
+  }
+  .range:focus-visible::-webkit-slider-thumb { outline: 2px solid #B4411F; outline-offset: 3px; }
+  .range:focus-visible::-moz-range-thumb { outline: 2px solid #B4411F; outline-offset: 3px; }
 
   /* Reveal-on-scroll only when JS is running, so content is never stranded invisible. */
   .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
   .js .reveal.is-in { opacity: 1; transform: none; }
+  .js .reveal-d1 { transition-delay: .08s; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .js .reveal { opacity: 1; transform: none; transition: none; }
-    #gated, #gate { transition: none !important; }
+    #year i { transition: none; }
   }
 </style>
 </head>
@@ -106,331 +99,200 @@
   <div id="progress" class="h-full w-0 bg-accent transition-[width] duration-150 ease-out"></div>
 </div>
 
-<!-- ══ MASTHEAD ═══════════════════════════════════════════════════════════ -->
+<!-- ══ MASTHEAD ═══════════════════════════════════════════════════════════
+     New sections (more tools, shop, podcast) go in the <nav> as one link each.
+───────────────────────────────────────────────────────────────────────── -->
 <header class="sticky top-0 z-40 border-b border-rule bg-paper/85 backdrop-blur">
   <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-6 py-4 sm:gap-6">
     <!-- [PLACEHOLDER: LOGO / WORDMARK] -->
     <a href="index.html" class="shrink-0 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-ink sm:text-[13px] sm:tracking-[0.22em]">Unscroll</a>
     <nav class="flex min-w-0 items-center gap-4 font-sans text-[12px] text-muted sm:gap-8 sm:text-[13px]">
-      <a href="index.html" class="whitespace-nowrap text-ink transition-colors" aria-current="page"><span class="sm:hidden">No. 01</span><span class="hidden sm:inline">Edition No. 01</span></a>
-      <a href="story.html" class="whitespace-nowrap transition-colors hover:text-ink">Our story</a>
+      <a href="#tool" class="whitespace-nowrap transition-colors hover:text-ink">Free tool</a>
+      <a href="#read" class="whitespace-nowrap transition-colors hover:text-ink">Read</a>
+      <a href="story.html" class="hidden whitespace-nowrap transition-colors hover:text-ink sm:inline">Our story</a>
     </nav>
-    <a href="#gate" class="shrink-0 whitespace-nowrap font-sans text-[12px] font-medium text-accent underline-offset-4 hover:underline sm:text-[13px]">Subscribe</a>
+    <a href="#subscribe" class="shrink-0 whitespace-nowrap font-sans text-[12px] font-medium text-accent underline-offset-4 hover:underline sm:text-[13px]">Sign up</a>
   </div>
 </header>
 
 <main>
-  <!-- ══ ARTICLE HEAD ═════════════════════════════════════════════════════ -->
-  <article class="mx-auto max-w-reading px-6">
-    <div class="pt-16 sm:pt-24">
-      <p class="font-sans text-[11px] uppercase tracking-[0.24em] text-muted">
-        Edition No. 01 &nbsp;·&nbsp; The Attention Economy
+
+  <!-- ══ HERO: the mission in four words, and the signup ══════════════════ -->
+  <section class="mx-auto max-w-5xl px-6 pb-16 pt-16 text-center sm:pb-20 sm:pt-24 lg:pt-28">
+    <p class="flex items-center justify-center gap-2.5 font-sans text-[11px] uppercase tracking-[0.24em] text-muted">
+      <span class="h-[7px] w-[7px] rounded-full bg-accent" aria-hidden="true"></span>
+      Free weekly email
+    </p>
+
+    <h1 class="mt-7 font-serif text-[clamp(2.9rem,14vw,3.6rem)] font-normal leading-[0.98] tracking-[-0.035em] sm:text-[5.2rem] lg:text-[6.4rem]">
+      Less phone.<br /><em>More life.</em>
+    </h1>
+
+    <p class="mx-auto mt-7 max-w-[30rem] text-balance font-serif text-xl leading-[1.5] text-muted sm:text-[1.45rem]">
+      Get one easy tip each week to help you spend less time on your phone.
+      It's free.
+    </p>
+
+    <form id="subscribe" class="mx-auto mt-9 max-w-[30rem] scroll-mt-28" action="#" method="post" novalidate data-signup="landing-hero">
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <label for="email-hero" class="sr-only">Email address</label>
+        <input
+          id="email-hero" name="email" type="email" required autocomplete="email"
+          placeholder="you@example.com"
+          class="w-full flex-1 rounded-lg border border-ink/15 bg-white px-4 py-4 font-sans text-[16px] text-ink shadow-[0_1px_2px_rgba(21,20,15,.04)] placeholder:text-muted/70 focus:border-ink focus:outline-none focus:ring-0" />
+        <button type="submit"
+          class="shrink-0 rounded-lg bg-ink px-7 py-4 font-sans text-[16px] font-medium text-paper transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper">
+          Sign up free
+        </button>
+      </div>
+      <p data-form-msg role="status" aria-live="polite" class="hidden pt-3 font-sans text-[13.5px] text-accent"></p>
+      <p class="pt-3 font-sans text-[13px] leading-relaxed text-muted">
+        One email a week. Leave any time.
+        <!-- [PLACEHOLDER: SOCIAL PROOF: real numbers only, add once there is a list] -->
       </p>
+    </form>
+  </section>
 
-      <h1 class="mt-6 font-serif text-[2.6rem] font-normal leading-[1.08] tracking-[-0.02em] sm:text-[3.4rem]">
-        How the slot machine got into your pocket
-      </h1>
+  <!-- ══ FREE TOOL: your year in dots ═════════════════════════════════════
+       The whole "why" of the site, shown with the reader's own number.
+       Days = hours a day x 365 / 24. No outside statistics.
+  ───────────────────────────────────────────────────────────────────────── -->
+  <section id="tool" class="mx-auto max-w-5xl scroll-mt-20 px-6 pb-20 sm:pb-24">
+    <div class="rounded-2xl border border-rule bg-white px-6 py-9 shadow-[0_1px_2px_rgba(21,20,15,.04),0_18px_50px_-24px_rgba(21,20,15,.22)] sm:px-10 sm:py-12">
+      <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-14">
 
-      <p class="mt-6 font-serif text-xl leading-relaxed text-muted sm:text-[1.35rem]">
-        Your lack of focus is not a character flaw. It is the intended output of
-        about ninety years of behavioral research, compressed into a glass
-        rectangle and handed to you for free.
-      </p>
+        <div>
+          <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-accent">Free tool</p>
 
-      <div class="mt-8 flex items-center gap-4 border-y border-rule py-4 font-sans text-[12.5px] text-muted">
-        <!-- [PLACEHOLDER: AUTHOR] -->
-        <span class="text-ink">By the Unscroll Desk</span>
-        <span class="text-rule">|</span>
-        <time datetime="2026-01-14">14 min read</time>
+          <h2 class="mt-4 text-balance font-serif text-[1.9rem] leading-[1.12] tracking-[-0.02em] sm:text-[2.3rem]">
+            How much of your year goes to your phone?
+          </h2>
+
+          <label for="hours" class="mt-8 block font-sans text-[15px] text-muted">
+            I'm on my phone about
+            <strong id="hours-out" class="whitespace-nowrap font-medium text-ink">4 hours</strong> a day.
+          </label>
+          <input id="hours" class="range mt-3" type="range" min="1" max="12" step="0.5" value="4" aria-valuetext="4 hours a day" />
+
+          <p class="mt-8 font-sans text-[11px] uppercase tracking-[0.2em] text-muted">That adds up to</p>
+          <p class="mt-2 font-serif leading-none tracking-[-0.03em]" aria-live="polite">
+            <span id="days-out" class="text-[4.6rem] tabular-nums text-accent sm:text-[5.4rem]">61</span>
+            <span class="whitespace-nowrap text-[1.6rem] tracking-[-0.01em] sm:text-[1.9rem]">days every year</span>
+          </p>
+
+          <p class="mt-6 font-sans text-[13px] leading-relaxed text-muted">
+            Want more detail?
+            <a href="quiz.html" class="whitespace-nowrap text-ink underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent">Take the 1-minute check &rarr;</a>
+          </p>
+        </div>
+
+        <div>
+          <div id="year" aria-hidden="true"></div>
+          <p class="mt-5 font-sans text-[13px] leading-relaxed text-muted">
+            Each dot is one day of your year. The colored dots go to your phone.
+          </p>
+        </div>
+
       </div>
     </div>
+  </section>
 
-    <!-- ══ FREE PREVIEW — the hook and Section I ══════════════════════════ -->
-    <div class="prose-editorial mt-12 font-serif text-[1.18rem] leading-[1.78] text-ink/90">
+  <!-- ══ READ ═════════════════════════════════════════════════════════════
+       One card per article. Copy a card to add the next one.
+  ───────────────────────────────────────────────────────────────────────── -->
+  <section id="read" class="mx-auto max-w-5xl scroll-mt-20 px-6 pb-20 sm:pb-24">
+    <h2 class="font-sans text-[11px] uppercase tracking-[0.24em] text-muted">Start reading</h2>
 
-      <p class="dropcap">
-        In 1931, a graduate student at Harvard built a box. Inside it, a rat
-        pressed a lever and food appeared. B.F. Skinner expected the rat to
-        learn the rhythm — press, eat, press, eat — and settle into something
-        like boredom. Then his pellet dispenser jammed. Rewards started
-        arriving at random. And the rat, deprived of any pattern to rely on,
-        began pressing the lever far more often than before.
-      </p>
+    <div class="mt-6 grid gap-5 sm:grid-cols-2">
+      <a href="edition-01.html" class="reveal group flex flex-col rounded-2xl border border-rule bg-white/60 p-7 transition-colors hover:bg-white sm:p-8">
+        <span class="font-sans text-[11px] uppercase tracking-[0.18em] text-accent">Edition No. 01</span>
+        <span class="mt-4 font-serif text-[1.6rem] leading-[1.15] tracking-[-0.015em] transition-colors group-hover:text-accent">Why your phone is so hard to put down</span>
+        <span class="mt-3 font-serif text-[1.08rem] leading-relaxed text-muted">A short history of how apps learned to keep us scrolling.</span>
+        <span class="mt-auto whitespace-nowrap pt-7 font-sans text-[12.5px] text-muted">14 min read <span aria-hidden="true" class="ml-1.5 inline-block text-ink transition-transform group-hover:translate-x-1">&rarr;</span></span>
+      </a>
 
-      <p>
-        Skinner had stumbled onto the variable-ratio reinforcement schedule:
-        the discovery that unpredictable rewards produce more compulsive
-        behavior than predictable ones. It is the single most reliable finding
-        in the history of behavioral psychology. It is also the reason you
-        reach for your phone before you have decided to.
-      </p>
-
-      <figure class="my-12 border-l-2 border-accent pl-6">
-        <blockquote class="font-serif text-[1.45rem] leading-[1.45] tracking-[-0.01em] text-ink">
-          “A wealth of information creates a poverty of attention.”
-        </blockquote>
-        <figcaption class="mt-3 font-sans text-[12px] uppercase tracking-[0.14em] text-muted">
-          Herbert A. Simon, 1971
-        </figcaption>
-      </figure>
-
-      <h2 class="sectionmark mb-5 mt-14 font-sans text-[12px] font-semibold uppercase tracking-[0.2em] text-ink">
-        I. &nbsp;The price of free
-      </h2>
-
-      <p>
-        The economist Herbert Simon saw the shape of the problem two decades
-        before the web existed. If information is abundant, he argued, then the
-        scarce resource is not information — it is the human capacity to attend
-        to it. Any market built on abundant information will therefore become a
-        market in attention. He wrote that in a conference paper. Nobody built a
-        business model on it for thirty years.
-      </p>
-
-      <p>
-        Then, in 2000, the dot-com crash took the banner ad down with it. The
-        industry's answer was not to charge users money. It was to get far
-        better at knowing them. Targeting replaced reach. And once the unit of
-        sale became a precisely-identified human being rather than a vague
-        audience, the incentive changed permanently: every additional minute a
-        person spent on a page became directly, measurably, saleable.
-      </p>
-
-      <p>
-        This is the part that gets flattened in most retellings. No one sat in a
-        room and decided to make a billion people anxious. What happened is
-        duller and worse: thousands of smart people ran millions of A/B tests,
-        each one optimizing a single number, and the number they were optimizing
-        was <em>time on site</em>. Compulsion was never the goal. It was simply
-        what won the tests.
-      </p>
+      <a href="story.html" class="reveal reveal-d1 group flex flex-col rounded-2xl border border-rule bg-white/60 p-7 transition-colors hover:bg-white sm:p-8">
+        <span class="font-sans text-[11px] uppercase tracking-[0.18em] text-accent">Our story</span>
+        <span class="mt-4 font-serif text-[1.6rem] leading-[1.15] tracking-[-0.015em] transition-colors group-hover:text-accent">Why we started Unscroll</span>
+        <span class="mt-3 font-serif text-[1.08rem] leading-relaxed text-muted">We built a gadget to block the phone first. Here's what we learned.</span>
+        <span class="mt-auto whitespace-nowrap pt-7 font-sans text-[12.5px] text-muted">7 min read <span aria-hidden="true" class="ml-1.5 inline-block text-ink transition-transform group-hover:translate-x-1">&rarr;</span></span>
+      </a>
     </div>
+  </section>
 
-    <!-- ══ THE GATE ═════════════════════════════════════════════════════════
-         Section II onward is rendered, then masked, blurred and inert. The
-         reader sees "Four inventions" begin, watches it dissolve, and lands on
-         the card. Swap the contents freely — the mask adapts to any height.
-    ───────────────────────────────────────────────────────────────────────── -->
-    <div id="gated" aria-hidden="true" class="prose-editorial font-serif text-[1.18rem] leading-[1.78] text-ink/90">
-
-      <h2 class="sectionmark mb-5 mt-14 font-sans text-[12px] font-semibold uppercase tracking-[0.2em] text-ink">
-        II. &nbsp;Four inventions
+  <!-- ══ MISSION: why we exist, and the second signup ═════════════════════ -->
+  <section class="border-t border-rule bg-white/60">
+    <div class="mx-auto max-w-5xl px-6 py-20 text-center sm:py-28">
+      <h2 class="text-balance font-serif text-[2.2rem] font-normal leading-[1.08] tracking-[-0.025em] sm:text-[3rem] lg:text-[3.3rem]">
+        <span class="lg:block">Phones are built to keep you looking.</span>
+        <em class="lg:block">We help you look up.</em>
       </h2>
 
-      <p>
-        Four design decisions, shipped between 2006 and 2013, did most of the
-        damage. None of them looked like much at the time.
+      <p class="mx-auto mt-6 max-w-[30rem] text-balance font-serif text-[1.2rem] leading-[1.55] text-muted">
+        Easy tips, free tools and short reads. One email a week.
       </p>
 
-      <p>
-        <strong class="font-semibold">The infinite scroll</strong> arrived in 2006,
-        sketched by a designer named Aza Raskin who wanted to spare people the
-        friction of clicking “next page.” It worked. It also removed the only
-        natural stopping cue the web had. A page that ends gives you a moment to
-        decide whether to continue. A page that never ends never asks.
-      </p>
-
-      <p>
-        <strong class="font-semibold">The News Feed</strong> followed weeks later —
-        an algorithmically ranked, continuously refreshed river of other
-        people's lives. Users revolted; hundreds of thousands signed petitions
-        against it. Engagement doubled anyway. That gap, between what people
-        said they wanted and what they measurably did, became the industry's
-        permanent justification for ignoring the first number.
-      </p>
-
-      <p>
-        <strong class="font-semibold">Pull-to-refresh</strong> shipped in 2009 in a
-        small Twitter client. You drag the screen down, release, and wait to see
-        what the machine gives you. It is, gesturally and psychologically, the
-        arm of a slot machine. Its own inventor has since called it exactly
-        that.
-      </p>
-
-      <p>
-        <strong class="font-semibold">The push notification</strong> completed the
-        circuit. Until 2009, you had to decide to open the app. After 2009, the
-        app could decide to open you — and, within a few years, could learn the
-        precise hour of your precise day at which you were most likely to be
-        susceptible.
-      </p>
-
-      <h2 class="sectionmark mb-5 mt-14 font-sans text-[12px] font-semibold uppercase tracking-[0.2em] text-ink">
-        III. &nbsp;The streak, and the shape of a modern habit
-      </h2>
-
-      <p>
-        By 2015 the loop was closed and the industry moved on to a subtler
-        problem: not how to capture attention, but how to make its absence
-        painful. Snapchat's streak counter is the cleanest example ever
-        shipped — a number that only ever goes up, that two people maintain
-        together, and that disappears forever if either one misses a day.
-      </p>
-
-      <p>
-        What makes it remarkable is that it contains no content. There is
-        nothing to read, nothing to watch, nothing of value transferred. It is
-        pure loss aversion, rendered as a small orange flame, and it reliably
-        pulled teenagers back to an app they had otherwise stopped enjoying.
-      </p>
-
-      <h2 class="sectionmark mb-5 mt-14 font-sans text-[12px] font-semibold uppercase tracking-[0.2em] text-ink">
-        IV. &nbsp;Why willpower is the wrong tool
-      </h2>
-
-      <p>
-        The standard advice — use less, be present, try harder — fails for a
-        structural reason. You are not competing against your own weakness. You
-        are competing against an adaptive system, running continuous
-        experiments, with a feedback loop measured in milliseconds and a budget
-        measured in billions.
-      </p>
-    </div>
-
-    <!-- ══ SIGN-UP CARD ═══════════════════════════════════════════════════ -->
-    <section id="gate" class="reveal relative z-10 -mt-20 mb-24 scroll-mt-24 sm:-mt-24">
-      <div class="mx-auto max-w-[31rem] rounded-xl border border-rule bg-white px-7 py-9 shadow-[0_1px_2px_rgba(21,20,15,.04),0_18px_50px_-24px_rgba(21,20,15,.22)] sm:px-9">
-        <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-accent">
-          End of the free preview
-        </p>
-
-        <h2 class="mt-4 font-serif text-[1.75rem] leading-[1.2] tracking-[-0.015em] sm:text-[2rem]">
-          Keep reading — and get the playbook.
-        </h2>
-
-        <p class="mt-4 font-serif text-[1.05rem] leading-relaxed text-muted">
-          Subscribe free to finish this breakdown — the four inventions, the
-          streak, and why willpower is the wrong tool — plus one issue a week:
-          the mechanics of an attention trap, and the specific tools and
-          settings that disarm it.
-        </p>
-
-        <!-- [PLACEHOLDER: FORM ACTION — point at ConvertKit / Beehiiv / Loops / your API] -->
-        <form class="mt-7 space-y-3" action="#" method="post" novalidate data-signup>
-          <label for="email-gate" class="sr-only">Email address</label>
+      <form class="mx-auto mt-9 max-w-[30rem]" action="#" method="post" novalidate data-signup="landing-footer">
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <label for="email-end" class="sr-only">Email address</label>
           <input
-            id="email-gate" name="email" type="email" required autocomplete="email"
+            id="email-end" name="email" type="email" required autocomplete="email"
             placeholder="you@example.com"
-            class="w-full rounded-lg border border-rule bg-paper px-4 py-3.5 font-sans text-[15px] text-ink placeholder:text-muted/70 focus:border-ink focus:outline-none focus:ring-0" />
+            class="w-full flex-1 rounded-lg border border-ink/15 bg-white px-4 py-4 font-sans text-[16px] text-ink shadow-[0_1px_2px_rgba(21,20,15,.04)] placeholder:text-muted/70 focus:border-ink focus:outline-none focus:ring-0" />
           <button type="submit"
-            class="w-full rounded-lg bg-ink px-4 py-3.5 font-sans text-[15px] font-medium text-paper transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white">
-            Read the rest &rarr;
+            class="shrink-0 rounded-lg bg-ink px-7 py-4 font-sans text-[16px] font-medium text-paper transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper">
+            Sign up free
           </button>
-          <p data-form-msg role="status" aria-live="polite" class="hidden pt-1 font-sans text-[13px] text-accent"></p>
-        </form>
-
-        <p class="mt-5 font-sans text-[12.5px] leading-relaxed text-muted">
-          Free, weekly, one click to leave.
-          <!-- [PLACEHOLDER: SOCIAL PROOF — e.g. “Joined by 12,400 readers.”] -->
-          <span class="text-ink">Joined by 12,400 readers.</span>
-        </p>
-      </div>
-
-      <!-- Soft exit for the not-yet-convinced: send them to the story. -->
-      <p class="mx-auto mt-8 max-w-[31rem] text-center font-sans text-[13px] text-muted">
-        Not yet? &nbsp;
-        <a href="story.html" class="text-ink underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent">
-          Read why we stopped selling hardware &rarr;
-        </a>
-      </p>
-
-      <!-- Second door: readers who want their own number before an email. -->
-      <p class="mx-auto mt-3 max-w-[31rem] text-center font-sans text-[13px] text-muted">
-        Or <a href="quiz.html" class="text-ink underline decoration-rule underline-offset-4 transition-colors hover:text-accent hover:decoration-accent">take the 60-second diagnostic</a>
-        and see what your screen time costs you.
-      </p>
-    </section>
-  </article>
+        </div>
+        <p data-form-msg role="status" aria-live="polite" class="hidden pt-3 font-sans text-[13.5px] text-accent"></p>
+      </form>
+    </div>
+  </section>
 </main>
 
-<!-- ══ FOOTER ═══════════════════════════════════════════════════════════════ -->
+<!-- ══ FOOTER: the page ends, and says so ═══════════════════════════════════ -->
 <footer class="border-t border-rule">
-  <div class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-10 font-sans text-[12.5px] text-muted sm:flex-row sm:items-center sm:justify-between">
-    <p>&copy; <span id="year">2026</span> Unscroll. <!-- [PLACEHOLDER: LEGAL NAME] --></p>
+  <p class="mx-auto max-w-5xl px-6 pt-10 text-center font-serif text-[1.1rem] italic text-muted sm:text-left">
+    You've reached the end. <span class="whitespace-nowrap">Go enjoy your day.</span>
+  </p>
+  <div class="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 pb-10 pt-6 font-sans text-[12.5px] text-muted sm:flex-row sm:justify-between">
+    <p>&copy; <span id="year-now">2026</span> Unscroll. <!-- [PLACEHOLDER: LEGAL NAME] --></p>
     <div class="flex gap-6">
-      <a href="index.html" class="hover:text-ink">Edition No. 01</a>
+      <a href="edition-01.html" class="hover:text-ink">Edition No. 01</a>
       <a href="story.html" class="hover:text-ink">Our story</a>
+      <a href="quiz.html" class="hover:text-ink">1-minute check</a>
       <!-- [PLACEHOLDER: add a privacy page, then link it here] -->
     </div>
   </div>
 </footer>
 
-<!-- ══ STICKY CTA — appears mid-read, retires at the card ════════════════ -->
-<div id="stickybar"
-     class="pointer-events-none fixed inset-x-0 bottom-0 z-40 translate-y-full opacity-0 transition-all duration-300 ease-out">
-  <div class="mx-auto mb-4 flex max-w-reading items-center justify-between gap-4 rounded-full border border-rule bg-white/90 px-5 py-3 shadow-[0_10px_30px_-12px_rgba(21,20,15,.3)] backdrop-blur">
-    <p class="font-sans text-[13px] leading-tight text-muted">Finish the issue —</p>
-    <a href="#gate" class="rounded-full bg-ink px-4 py-2 font-sans text-[13px] font-medium text-paper transition-colors hover:bg-accent">Subscribe free</a>
-  </div>
-</div>
-
 <script>
 (function () {
-  var yearEl = document.getElementById('year');
+  // [PLACEHOLDER: SIGNUP ENDPOINT: the list provider's form URL, or your own
+  // /api/subscribe route. While this is empty the forms say they are not
+  // connected; they never tell a reader they signed up when nothing was saved.]
+  var SIGNUP_ENDPOINT = '';
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var yearEl = document.getElementById('year-now');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // ── Reading progress ───────────────────────────────────────────────────
   var bar = document.getElementById('progress');
-
-  // ── Sticky CTA: past 35% of the page, hidden while the card is on screen
-  //    and gone for good once the issue is unlocked.
-  var sticky = document.getElementById('stickybar');
-  var gate = document.getElementById('gate');
-  var gated = document.getElementById('gated');
-  var gateVisible = false;
-  var unlocked = false;
-
-  function paint() {
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    var pct = h > 0 ? Math.min(1, window.scrollY / h) : 0;
-    bar.style.width = (pct * 100).toFixed(2) + '%';
-
-    var show = !unlocked && pct > 0.35 && !gateVisible;
-    sticky.classList.toggle('translate-y-full', !show);
-    sticky.classList.toggle('opacity-0', !show);
-    sticky.classList.toggle('pointer-events-none', !show);
-  }
-
-  // ── Unlock: drop the mask, expand the rest of the issue, retire the card ──
-  function unlock() {
-    if (unlocked) return;
-    unlocked = true;
-
-    // Start from the clipped height so the growth has something to animate.
-    gated.style.maxHeight = gated.getBoundingClientRect().height + 'px';
-    gated.classList.add('is-unlocked');
-    gated.removeAttribute('aria-hidden');
-
-    requestAnimationFrame(function () {
-      gated.style.maxHeight = gated.scrollHeight + 'px';
-    });
-    gated.addEventListener('transitionend', function done(ev) {
-      if (ev.propertyName !== 'max-height') return;
-      gated.style.maxHeight = 'none';   // never clip a later reflow
-      gated.removeEventListener('transitionend', done);
-      paint();
-    });
-
-    // The card and its two exit links have done their job.
-    gate.classList.add('is-dismissed');
-    setTimeout(function () { gate.style.display = 'none'; paint(); }, 400);
-
-    paint();
-  }
-
-  new IntersectionObserver(function (entries) {
-    gateVisible = entries[0].isIntersecting;
-    paint();
-  }, { threshold: 0.2 }).observe(gate);
-
   var ticking = false;
-  window.addEventListener('scroll', function () {
+  function onScroll() {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(function () { paint(); ticking = false; });
-  }, { passive: true });
-  window.addEventListener('resize', paint);
-  paint();
+    requestAnimationFrame(function () {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = ((h > 0 ? Math.min(1, window.scrollY / h) : 0) * 100).toFixed(2) + '%';
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
 
   // ── Reveal on enter ────────────────────────────────────────────────────
   var io = new IntersectionObserver(function (entries) {
@@ -438,30 +300,77 @@
   }, { rootMargin: '0px 0px -12% 0px' });
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 
-  // ── Form stub — replace with your provider's submit ────────────────────
+  // ── Your year in dots ──────────────────────────────────────────────────
+  var range = document.getElementById('hours');
+  var hoursOut = document.getElementById('hours-out');
+  var daysOut = document.getElementById('days-out');
+  var year = document.getElementById('year');
+  var dots = [];
+  for (var i = 0; i < 365; i++) dots.push(year.appendChild(document.createElement('i')));
+
+  function paintYear() {
+    var h = parseFloat(range.value);
+    var n = Math.round(h * 365 / 24);
+    var label = h + (h === 1 ? ' hour' : ' hours');
+    hoursOut.textContent = label;
+    daysOut.textContent = n;
+    range.setAttribute('aria-valuetext', label + ' a day');
+    range.style.setProperty('--fill', ((h - range.min) / (range.max - range.min) * 100) + '%');
+    dots.forEach(function (d, i) { d.classList.toggle('on', i < n); });
+  }
+
+  // First time the dots scroll into view they fill one by one; after that
+  // they follow the slider straight away.
+  var filled = reduce;
+  function fillOnce() {
+    if (filled) return;
+    filled = true;
+    var n = Math.round(parseFloat(range.value) * 365 / 24);
+    dots.slice(0, n).forEach(function (d, i) {
+      setTimeout(function () { d.classList.add('on'); }, i * 9);
+    });
+  }
+  range.addEventListener('input', function () { filled = true; paintYear(); });
+  if (reduce || !('IntersectionObserver' in window)) {
+    paintYear();
+  } else {
+    new IntersectionObserver(function (entries, obs) {
+      if (!entries[0].isIntersecting) return;
+      obs.disconnect();
+      fillOnce();
+    }, { threshold: 0.35 }).observe(year);
+  }
+
+  // ── Signup ─────────────────────────────────────────────────────────────
   document.querySelectorAll('[data-signup]').forEach(function (form) {
+    var msg = form.querySelector('[data-form-msg]');
+    var button = form.querySelector('button[type=submit]');
+    function say(text) { msg.textContent = text; msg.classList.remove('hidden'); }
+
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var msg = form.querySelector('[data-form-msg]');
       var email = (form.querySelector('input[type=email]') || {}).value || '';
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-        msg.textContent = 'That email looks incomplete.';
-        msg.classList.remove('hidden');
+        say('That email looks incomplete.');
         return;
       }
-      // [PLACEHOLDER: POST to your list provider, then call unlock() on a
-      //  resolved response — e.g.
-      //    fetch('/api/subscribe', {...}).then(function (res) {
-      //      if (!res.ok) throw new Error('That did not go through.');
-      //      unlock();
-      //    }).catch(function (err) {
-      //      msg.textContent = err.message;
-      //      msg.classList.remove('hidden');
-      //    });
-      //  Until then the subscribe resolves immediately. ]
-      msg.classList.add('hidden');
-      form.querySelector('button[type=submit]').textContent = 'Subscribed';
-      unlock();
+      if (!SIGNUP_ENDPOINT) {
+        say('Preview only. This form is not connected to a list yet.');
+        return;
+      }
+      button.disabled = true;
+      fetch(SIGNUP_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: form.getAttribute('data-signup') }),
+      }).then(function (res) {
+        if (!res.ok) throw new Error('signup failed');
+        say("You're in. Check your inbox.");
+        button.textContent = 'Signed up';
+      }).catch(function () {
+        button.disabled = false;
+        say('That did not go through. Try again in a minute.');
+      });
     });
   });
 })();
