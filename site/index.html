@@ -268,10 +268,10 @@
 
 <script>
 (function () {
-  // [PLACEHOLDER: SIGNUP ENDPOINT: the list provider's form URL, or your own
-  // /api/subscribe route. While this is empty the forms say they are not
-  // connected; they never tell a reader they signed up when nothing was saved.]
-  var SIGNUP_ENDPOINT = '';
+  // api/subscribe.js forwards the email to Mailcheap. It answers 503 until its
+  // three env vars are set on Vercel, and the forms then say signup is not set
+  // up. They never tell a reader they signed up when nothing was saved.
+  var SIGNUP_ENDPOINT = '/api/subscribe';
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -342,6 +342,11 @@
   }
 
   // ── Signup ─────────────────────────────────────────────────────────────
+  var FAILED = {
+    400: 'That email looks wrong. Check it and try again.',
+    429: 'Too many tries. Please wait a few minutes.',
+    503: 'Signup is not set up yet. Please check back soon.',
+  };
   document.querySelectorAll('[data-signup]').forEach(function (form) {
     var msg = form.querySelector('[data-form-msg]');
     var button = form.querySelector('button[type=submit]');
@@ -354,22 +359,22 @@
         say('That email looks incomplete.');
         return;
       }
-      if (!SIGNUP_ENDPOINT) {
-        say('Preview only. This form is not connected to a list yet.');
-        return;
-      }
       button.disabled = true;
       fetch(SIGNUP_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, source: form.getAttribute('data-signup') }),
       }).then(function (res) {
-        if (!res.ok) throw new Error('signup failed');
-        say("You're in. Check your inbox.");
+        if (res.ok) return res.json();
+        var err = new Error('signup failed');
+        err.status = res.status;
+        throw err;
+      }).then(function (data) {
+        say(data.pending ? 'Almost done. Check your inbox to confirm.' : "You're in. Thanks for signing up.");
         button.textContent = 'Signed up';
-      }).catch(function () {
+      }).catch(function (err) {
         button.disabled = false;
-        say('That did not go through. Try again in a minute.');
+        say(FAILED[err.status] || 'That did not go through. Try again in a minute.');
       });
     });
   });

@@ -5,8 +5,9 @@ Static site. No build step, no dependencies to install.
 ```
 index.html       The landing page: signup, the "your year in dots" tool, article links
 edition-01.html  Edition No. 01 — intro, gated "Four inventions" section, sign-up card
-story.html    Our Story — 186 pickups, whack-a-mole, the Shuttr pivot, the mission
-vercel.json   cleanUrls routing + security headers
+story.html       Our Story — 186 pickups, whack-a-mole, the Shuttr pivot, the mission
+api/subscribe.js Vercel function: forwards a signup to Mailcheap (needs 3 env vars)
+vercel.json      cleanUrls routing + security headers
 ```
 
 ## Live

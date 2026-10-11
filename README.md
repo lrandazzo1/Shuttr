@@ -26,6 +26,7 @@ build, no framework preset. Deployed to Vercel (team `jamoke`, project
 | `edition-01.html` | Edition No. 01 — the article, the blur gate from Section II, the sign-up card |
 | `story.html` | Our Story — the reflex, the 186/6/43 math, whack-a-mole, the Shuttr pivot |
 | `quiz.html` + `quiz.js` | The Focus Stack Diagnostic, as a standalone page |
+| `api/subscribe.js` | Vercel function the landing forms post to; forwards the email to Mailcheap |
 | `vercel.json` | `cleanUrls` routing and security headers |
 
 `vercel.json` sets `cleanUrls: true`, so `/story.html` serves at `/story`. The
@@ -53,11 +54,13 @@ step by hand, so a change to one needs the same change to the other.
 Search for `PLACEHOLDER` across the repo. The short list:
 
 - **Brand** — "Unscroll" in every masthead and footer, plus titles and meta.
-- **Form actions** — every form is a stub that fakes success. Point them at your
-  list provider; `examples/app/api/subscribe/route.js` shows the payload shape.
-  In `site/quiz.js`, set `ENDPOINT`.
-  In `site/index.html`, set `SIGNUP_ENDPOINT`; until it is set the landing forms
-  say they are not connected and do not fake success.
+- **Form actions** — the landing page forms post to `/api/subscribe`, which
+  forwards the email to [Mailcheap](https://github.com/marclou/mailcheap). Deploy
+  Mailcheap, create a newsletter and an API key in it, then set `MAILCHEAP_URL`,
+  `MAILCHEAP_API_KEY` and `MAILCHEAP_NEWSLETTER` on this Vercel project. Until
+  then the function answers 503 and the forms say signup is not set up. The
+  forms in `edition-01.html`, `story.html` and `quiz.js` are still stubs that
+  fake success; point them at the same route (`ENDPOINT` in `quiz.js`).
 - **Affiliate links** — `DEFAULT_TOOLS` in the component. All `#` today.
 - **Social proof** — the 12,400 readers figure is a placeholder, as are the
   140 testers and the beta-tester quote.
